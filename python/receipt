@@ -9,9 +9,11 @@ SOURCE="Python"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WEB_SITE="http://www.python.org/"
 WGET_URL="http://www.python.org/ftp/python/$VERSION/$TARBALL"
+SUGGESTED="tcl tk"
 
 DEPENDS="openssl bzlib readline sqlite zlib ncursesw"
-BUILD_DEPENDS="openssl-dev bzip2-dev readline-dev ncursesw-dev"
+BUILD_DEPENDS="openssl-dev bzip2-dev readline-dev ncursesw-dev tcl-dev \
+tk-dev"
 
 # Rules to configure and make the package.
 compile_rules()
