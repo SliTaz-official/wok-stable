@@ -13,7 +13,7 @@ CONFIG_FILES="/etc/openerp/openerp-web.conf"
 
 DEPENDS="matplotlib setuptools python-turbogears python-pil python \
 python-pyxml python-pyparsing python-babel python-mako python-markupsafe"
-BUILD_DEPENDS="setuptools python-dev python python-pyxml python-turbogears\
+BUILD_DEPENDS="setuptools python-dev python python-pyxml python-turbogears \
 python-beaker"
 
 # Rules to configure and make the package.
