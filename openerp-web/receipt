@@ -8,24 +8,26 @@ MAINTAINER="pankso@slitaz.org"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://openerp.com/"
 WGET_URL="$WEB_SITE/download/stable/source/$TARBALL"
-DEPENDS="matplotlib setuptools python-turbogears python-pil python \
-python-pyxml python-pyparsing python-babel python-mako python-markupsafe"
-BUILD_DEPENDS="setuptools python-dev python python-pyxml python-turbogears"
 CONFIG_FILES="/etc/openerp/openerp-web.conf"
 # http://doc.openerp.com/install/linux/web/index.html
+
+DEPENDS="matplotlib setuptools python-turbogears python-pil python \
+python-pyxml python-pyparsing python-babel python-mako python-markupsafe"
+BUILD_DEPENDS="setuptools python-dev python python-pyxml python-turbogears\
+python-beaker"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	python setup.py install --root=$PWD/_pkg
+	python setup.py install --root=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr $fs/etc/openerp $fs/usr/share/applications
-	cp -a stuff/etc $fs/
+	cp -a $stuff/etc $fs/
 	cp -a $_pkg/usr/config/openerp-web.cfg $fs/etc/openerp/openerp-web.conf
 	cp -a $_pkg/usr/bin $fs/usr
 	cp -a $_pkg/usr/lib $fs/usr

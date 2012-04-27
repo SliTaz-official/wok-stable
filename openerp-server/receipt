@@ -11,7 +11,7 @@ WGET_URL="$WEB_SITE/download/stable/source/$TARBALL"
 
 DEPENDS="python postgresql libxml2-python libxslt psycopg2 python-reportlab \
 python-pyparsing graphviz libgcrypt python-pil python-lxml matplotlib \
-python-pyxml python-pychart python-pydot egenix-mx-base"
+python-pyxml python-pychart python-pydot egenix-mx-base libxslt-python"
 BUILD_DEPENDS="libxml2-python psycopg2 libxml2 libxslt-python python-reportlab \
 python-pychart python-pydot python-dev"
 
@@ -29,8 +29,8 @@ genpkg_rules()
 	chmod 777 $fs/var/run/openerp $fs/var/log/openerp
 	cp -a $_pkg/usr/bin $fs/usr
 	cp -a $_pkg/usr/lib $fs/usr
-	cp -a $stuff/* $fs
-	sed -i 's|cd .*_pkg|cd |' $fs/usr/bin/openerp-server
+	cp -a $stuff/etc $fs
+	cp -a $stuff/openerp-server $fs/usr/bin
 }
 
 # Pre and post install commands for Tazpkg.
