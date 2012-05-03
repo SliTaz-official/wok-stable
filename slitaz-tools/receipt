@@ -23,6 +23,8 @@ CONFIG_FILES="
 compile_rules()
 {
     cd $src
+	  # tazinst minor fixes
+	  patch -p1 < $stuff/tazinst.patch || return 1
     make && make DESTDIR=$DESTDIR install
 }
 
