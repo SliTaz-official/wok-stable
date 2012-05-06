@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# The installed openerp-server wrapper script use wrong path.
+#
+cd /usr/lib/python2.7/site-packages/openerp-server
+exec /usr/bin/python ./openerp-server.py $@

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Ophcrack Cracking
+Name[fr]=Craquage Ophcrack
+Exec=ophcrack
+Icon=ophcrack
+Terminal=false
+Type=Application
+Categories=System;
