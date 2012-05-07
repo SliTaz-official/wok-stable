@@ -16,8 +16,11 @@ BUILD_DEPENDS=""
 # Rules to configure and make the package.
 compile_rules()
 {
-  cd $src && make && 
-  make DESTDIR=$DESTDIR install
+	cd $src # && make && 
+		# installer.cgi user validation fix
+		patch -p0 < $stuff/installer.patch || return 1
+		make &&
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
