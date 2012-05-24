@@ -19,22 +19,23 @@ compile_rules()
 	find -type f | xargs sed -i -e 's/DECLARE_MUTEX/DEFINE_SEMAPHORE/g' \
 		-e 's/init_MUTEX\([^)]*\)/sema_init\1, 1/g'
 	[ -d $WOK/linux/taz ] || tazwok cook linux
-	make KSRC=$WOK/linux/$(ls $WOK/linux/taz) install
+	make KSRC=$WOK/linux/source/$(ls $WOK/linux/taz) install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
+	EXTRAVERSION=_${kvers}
 	cp -a $_pkg/* $fs
 }
 
 # Post install/remove commands for Tazpkg.
 post_install()
 {
-	chroot "$1/" depmod -a
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz
 }
 
 post_remove()
 {
-	depmod -a
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz
 }
