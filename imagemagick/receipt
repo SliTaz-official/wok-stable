@@ -20,6 +20,7 @@ TAGS="image photo toolkit"
 compile_rules()
 {
 	cd $src
+	sed -i 's/gzgetc(image/gzgetc((gzFile) image/' magick/blob.c
 	./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \
