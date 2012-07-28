@@ -21,6 +21,9 @@ genpkg_rules()
 
 post_install()
 {
+  install_resolver=false
+  [ -s /etc/resolv.conf -a ! -s $1/etc/resolv.conf ] && install_resolver=true
+  $install_resolver && cp /etc/resolv.conf $1/etc/resolv.conf
   # directly support some freely distributable firmware drivers 
   # intel
   chroot $1/ get-iwlwifi-3945-firmware --firmware
@@ -30,4 +33,5 @@ post_install()
   chroot $1/ get-rt61-firmware --firmware
   chroot $1/ get-rt73-firmware --firmware
   chroot $1/ get-rt2870usb-firmware --firmware
+  $install_resolver && rm -f $1/etc/resolv.conf
 }
