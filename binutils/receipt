@@ -40,7 +40,7 @@ cook_tmp_toolchain()
 	make &&
 	make install &&
 	make -C ld clean &&
-	make -C ld LIB_PATH=/usr/lib:/lib 
+	make -C ld LIB_PATH=/usr/lib:/lib
 	} || return 1
 	cp ld/ld-new /tools/bin
 }
@@ -75,14 +75,14 @@ genpkg_rules()
 	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
 	cp -a $_pkg/usr/lib/*.a $fs/usr/lib
 	cp -a $_pkg/usr/include $fs/usr
-	
+
 	# libiberty.h
 	cp -a $src/include/libiberty.h $fs/usr/include
-	
+
 	# Remove 'strings' (Busybox).
 	#rm $fs/usr/lib/libiberty.a
 	rm $fs/usr/bin/strings $fs/usr/bin/*-strings
-	
+
 	# Remove build directory (cookutils and tazwok path).
 	rm -rf $WOK/$PACKAGE/source/$PACKAGE-build
 	rm -rf $WOK/$PACKAGE/$PACKAGE-build
