@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="cmus"
+VERSION="2.4.3"
+CATEGORY="multimedia"
+SHORT_DESC="ncurses audio player"
+MAINTAINER="mojo@slitaz.org"
+WEB_SITE="http://cmus.sourceforge.net"
+TARBALL="$PACKAGE-v$VERSION.tar.bz2"
+#WGET_URL="ftp://ftp.heanet.ie/mirrors/sourceforge/c/project/cm/cmus/$TARBALL"
+WGET_URL=$SF_MIRROR/$PACKAGE/$TARBALL
+
+
+DEPENDS="alsa-lib libvorbis libogg libmad ncurses"
+BUILD_DEPENDS="alsa-lib-dev libvorbis-dev libogg-dev libmad-dev flac-dev ncurses-dev faad2-dev ffmpeg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure prefix=/usr CONFIG_PULSE=n 
+         make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+        mkdir -p $fs/usr/bin $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/bin         $fs/usr
+	cp -a $install/usr/lib/cmus    $fs/usr/lib
+	cp -a $install/usr/share/cmus  $fs/usr/share
+        
+}
