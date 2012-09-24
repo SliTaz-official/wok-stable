@@ -18,7 +18,7 @@ compile_rules()
 	chmod +x build.sh
 	chmod +x install.sh
 	./build.sh
-	./bin/nimrod c -d:release -d:useGnuReadline koch
+	./bin/nimrod c -d:release koch
 	./koch boot -d:release
 	./install.sh /usr/bin
 }
