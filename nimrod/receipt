@@ -15,19 +15,21 @@ BUILD_DEPENDS="gcc glibc-dev readline-dev"
 compile_rules()
 {
 	cd $src
+	sed -i 's/uname -m/echo i486/' build.sh
 	chmod +x build.sh
 	chmod +x install.sh
 	./build.sh
 	./bin/nimrod c -d:release koch
 	./koch boot -d:release
-	./install.sh /usr/bin
+	./install.sh $DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $_pkg/usr/bin $fs/usr
-	cp -a $_pkg/etc $fs/etc
-	cp -a $_pkg/usr/lib $fs/usr
-	cp -a $_pkg/usr/share $fs/usr
+	mkdir -p $fs/usr/share/nimrod $fs/usr/lib
+	cp -a $_pkg/nimrod/bin $fs/usr
+	cp -a $_pkg/nimrod/config $fs/etc
+	cp -a $_pkg/nimrod/lib $fs/usr/lib/nimrod
+	cp -a $_pkg/nimrod/doc $fs/usr/share/nimrod
 }
