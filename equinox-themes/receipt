@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="equinox-themes"
+VERSION="1.50"
+CATEGORY="x-window"
+SHORT_DESC="Equinox Evolution themes"
+MAINTAINER="al.bobylev@gmail.com"
+DEPENDS="equinox"
+TARBALL="140449-$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://gnome-look.org/content/show.php?content=140449"
+WGET_URL="http://gnome-look.org/CONTENT/content-files/$TARBALL"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	rm $src/*.crx
+	rm $src/*/ChangeLog
+	mkdir -p $fs/usr/share/themes
+	cp -a $src/* $fs/usr/share/themes
+}
+

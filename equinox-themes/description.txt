@@ -1,0 +1,1 @@
+Five GTK and Metacity themes to use with Equinox GTK engine 1.40 and Faenza icon theme.
