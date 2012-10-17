@@ -6,12 +6,12 @@ CATEGORY="multimedia"
 SHORT_DESC="Alsa GTK+ PCM player."
 MAINTAINER="pankso@slitaz.org"
 DEPENDS="gtk+ alsa-lib libmad libogg libvorbis xorg-libXdamage"
-BUILD_DEPENDS="gtk+-dev alsa-lib-dev libmad-dev libogg-dev libvorbis-dev"
-SUGGESTED="alsaplayer-scopes libid3tag"
+BUILD_DEPENDS="gtk+-dev alsa-lib-dev libmad-dev libogg-dev libvorbis-dev flac-dev"
+SUGGESTED="alsaplayer-scopes libid3tag flac"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.alsaplayer.org/"
 WGET_URL="http://www.alsaplayer.org/$TARBALL"
-TAGS="music audio player mp3 ogg"
+TAGS="music audio player mp3 ogg flac"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -23,7 +23,7 @@ compile_rules()
 		--infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		--enable-gtk2 \
-		--disable-flac \
+		--enable-flac \
 		--disable-jack \
 		--disable-esd \
 		$CONFIGURE_ARGS &&
