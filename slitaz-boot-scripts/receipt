@@ -27,6 +27,9 @@ genpkg_rules()
 	cp -a $src/init $fs
 	cp -a $src/applications $fs/usr/share
 
+	# Fix loopfs case (thanks xjjx) 
+	sed -i 's|.*to tmpfs.*|[ -d /mnt/etc ] \&\& launch_init\n&|' $fs/init
+
 	# Perms
 	chown -R root.root $fs
 	chmod 755 $fs/etc/init.d/*.sh
