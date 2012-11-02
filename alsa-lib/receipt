@@ -22,6 +22,9 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
+	# Enable software mixing for multiple audio streams
+	mkdir -p $fs/etc
+	cp $stuff/asound.conf $fs/etc
 	mkdir -p $fs/usr/lib $fs/usr/share
 	cp -a $_pkg/usr/bin $fs/usr
 	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
