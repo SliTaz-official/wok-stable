@@ -21,15 +21,18 @@ http://ftp.iitm.ac.in/openoffice \
 http://www.ring.gr.jp/archives/misc/openoffice \
 http://ftp.nluug.nl/pub/office/openoffice \
 
-do wget -O - $MIRROR/ 2> /dev/null | grep -q localized && break ; done
+do
+	wget -O - $MIRROR/ 2> /dev/null | grep -q localized || continue
+	DIR="stable"
+	LOC=$(wget -O - $MIRROR/localized/ 2> /dev/null | \
+		grep -E ">$LANG/|>${LANG/_/-}/|>${LANG%_*}/" | \
+		head -1 | sed 's/.*href=\"\(.*\)\/\".*/\1/')
+	[ -n "$LOC" ] && DIR="localized/$LOC"
+	VERSION="$(basename $(wget -O - $MIRROR/$DIR/ 2> /dev/null | grep \
+	href=\"[0-9] | tail -1 | sed 's/.*href=\"\(.*\)\".*/\1/') 2> /dev/null)"
+	[ -n "$VERSION" ] && break
+done
 
-DIR="stable"
-LOC=$(wget -O - $MIRROR/localized/ 2> /dev/null \
-| grep -E ">$LANG/|>${LANG/_/-}/|>${LANG%_*}/" | head -1 | sed 's/.*href=\"\(.*\)\/\".*/\1/')
-[ -n "$LOC" ] && DIR="localized/$LOC"
-
-VERSION="$(basename $(wget -O - $MIRROR/$DIR/ \
-	2> /dev/null | grep href=\"[0-9] | tail -1 | sed 's/.*href=\"\(.*\)\".*/\1/'))"
 if [ -z "$VERSION" ]; then
 	echo "Can't find VERSION. Abort."
 	exit 0
@@ -41,6 +44,7 @@ echo "Archive is $TARBALL ..."
 WGET_URL=$MIRROR/$DIR/$VERSION/$TARBALL
 
 TEMP_DIR="/tmp/$PACKAGE.$$"
+CUR_DIR=$(pwd)
 SOURCE_DIR="/tmp/src.$$"
 EXCLUDE="kde|gnome|test"
 LOG="/tmp/$(basename $0 .sh).log"
@@ -159,12 +163,12 @@ PACKAGE="$PACKAGE"
 VERSION="$VERSION"
 CATEGORY="office"
 SHORT_DESC="Productivity suite."
-DEPENDS=""
+DEPENDS="java-jre"
 WEB_SITE="$URL"
 
 post_install()
 {
-	cd /usr/share/applications
+	cd \$1/usr/share/applications
 	ln -s /usr/lib/openoffice/openoffice.org3/share/xdg/base.desktop openoffice.org3-base.desktop 
 	ln -s /usr/lib/openoffice/openoffice.org3/share/xdg/impress.desktop openoffice.org3-impress.desktop
 	ln -s /usr/lib/openoffice/openoffice.org3/share/xdg/writer.desktop openoffice.org3-writer.desktop
@@ -173,26 +177,67 @@ post_install()
 	ln -s /usr/lib/openoffice/openoffice.org3/share/xdg/draw.desktop openoffice.org3-draw.desktop
 	ln -s /usr/lib/openoffice/openoffice.org3/share/xdg/printeradmin.desktop openoffice.org3-printeradmin.desktop
 	
-	cd /usr/bin
+	cd \$1/usr/bin
 	ln -sf /usr/lib/openoffice/openoffice.org3/program/soffice
 }
 
 post_remove()
 {
-	rm -f /usr/share/applications/openoffice.org3-*
+	rm -f \$1/usr/share/applications/openoffice.org3-*
 }
 
 EOT
 
-# Pack
-tazpkg pack $PACKAGE-$VERSION
+fake_install()
+{
+	mkdir -p $ROOT/var/lib/tazpkg/installed/$PACKAGE
+	echo "00000000000000000000000000000000  $PACKAGE-$VERSION.tazpkg" >> \
+		$ROOT/var/lib/tazpkg/installed.md5
+	[ -s $1/description.txt $ROOT/var/lib/tazpkg/installed/$PACKAGE
+	( cd fs ; find *) | sed 's|^|/|' > \
+		$ROOT/var/lib/tazpkg/installed/$PACKAGE/files.list
+	if grep -q ^CONFIG_FILES= $1/receipt ; then
+		cd fs
+		find $( . ./receipt ; echo " $CONFIG_FILES" | sed 's| /| |g') |\
+			cpio -o -H newc | gzip -9 > \
+			$ROOT/var/lib/tazpkg/installed/$PACKAGE/volatile.cpio.gz
+		for i in $( . ./receipt ; echo $CONFIG_FILES) ; do
+			[ -e $ROOT$i ] && rm -rf .$i
+		done
+		cd ..
+	fi
+	sed -i "s/^PACKAGE=/UNPACKED_SIZE=\"$(du -chs $1 | sed '$!d;s/.total//')\"\n&/" \
+		$1/receipt
+	cp $1/receipt $ROOT/var/lib/tazpkg/installed/$PACKAGE
+	echo "Compute md5sum..."
+	find fs -type f | xargs md5sum | sed 's|  fs/|  /|' > \
+		$ROOT/var/lib/tazpkg/installed/$PACKAGE/md5sum
+	echo "Move files..."
+	( cd $1/fs ; find ) | while read file ; do 
+		[ -e $1/fs/$file -a ! -e $ROOT/$file ] &&
+		mv $1/fs/$file $(dirname $ROOT/$file)
+	done
+}
 
-# Clean to save RAM memory
-rm -rf $PACKAGE-$VERSION
+case " $@ " in
+*\ --q*)	# --quick
+	fake_install $PACKAGE-$VERSION ;;
+*)
+	# Pack
+	tazpkg pack $PACKAGE-$VERSION
 
-# Install pseudo package
-tazpkg install $PACKAGE-$VERSION.tazpkg --root=$ROOT
+	# Clean to save RAM memory
+	rm -rf $PACKAGE-$VERSION
+
+	# Install pseudo package
+	tazpkg install $PACKAGE-$VERSION.tazpkg --root=$ROOT
+
+	echo " $@ " | grep -q ' --k' &&
+	mv $PACKAGE-$VERSION.tazpkg $CUR_DIR
+	;;
+esac
+
+cd $CUR_DIR
 
 # Clean
 rm -rf $TEMP_DIR
-
