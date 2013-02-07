@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="gdmap"
+VERSION="0.8.1"
+CATEGORY="utilities"
+SHORT_DESC="Tool to visualize diskspace"
+MAINTAINER="al.bobylev@gmail.com"
+WEB_SITE="http://gdmap.sourceforge.net/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gtk+"
+BUILD_DEPENDS="libxml2-dev gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# gdmap not compiles without patches, so apply Debian patches
+	PATCH="gdmap_0.8.1-2.debian.tar.gz"
+	wget http://ftp.de.debian.org/debian/pool/main/g/gdmap/$PATCH
+	tar -xf $PATCH
+	for PATCH in $(cat ./debian/patches/series); do
+		patch -p1 < ./debian/patches/$PATCH
+	done
+
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
