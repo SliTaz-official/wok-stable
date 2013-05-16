@@ -1,0 +1,12 @@
+FIX: Linux local privilege escalation 0day, 2.6.37 - 3.8.10
+--- linux-2.6.37/kernel/perf_event.c
++++ linux-2.6.37/kernel/perf_event.c
+@@ -4705,7 +4705,7 @@
+ 
+ static int perf_swevent_init(struct perf_event *event)
+ {
+-	int event_id = event->attr.config;
++	u64 event_id = event->attr.config;
+ 
+ 	if (event->attr.type != PERF_TYPE_SOFTWARE)
+ 		return -ENOENT;

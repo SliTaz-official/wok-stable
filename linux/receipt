@@ -67,6 +67,7 @@ compile_rules()
 $PACKAGE-diff-$VERSION.u
 $PACKAGE-header-$VERSION.u
 $PACKAGE-freeinitrd-$VERSION.u
+$PACKAGE-perf_event-$VERSION.u
 aufs2-base.patch
 aufs2-standalone.patch
 001-squashfs-decompressors-add-xz-decompressor-module.patch
