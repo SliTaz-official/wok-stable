@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="luafilesystem"
+VERSION="1.6.2"
+CATEGORY="development"
+SHORT_DESC="File System Library for Lua."
+MAINTAINER="paul@slitaz.org"
+DEPENDS="lua"
+BUILD_DEPENDS="lua lua-dev git bzip2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://keplerproject.github.io/luafilesystem/"
+WGET_URL="git|"git://github.com/keplerproject/luafilesystem.git
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make PREFIX=/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/lua/5.1
+	cp -a $src/src/lfs.so $fs/usr/lib/lua/5.1
+
+}
+
