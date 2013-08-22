@@ -11,6 +11,7 @@ WEB_SITE="http://nginx.org/"
 WGET_URL="${WEB_SITE}download//$TARBALL"
 DEPENDS="pcre openssl zlib"
 BUILD_DEPENDS="pcre-dev openssl-dev zlib-dev"
+PROVIDE="lighttpd"
 CONFIG_FILES="/etc/nginx"
 
 # Rules to configure and make the package.
