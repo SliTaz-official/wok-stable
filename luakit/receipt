@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="luakit"
+VERSION="2012.09.13-r1"
+CATEGORY="network"
+SHORT_DESC="Fast, small, webkit based browser framework extensible by Lua."
+MAINTAINER="paul@slitaz.org"
+DEPENDS="lua luafilesystem gtk+ libwebkit libunique sqlite"
+BUILD_DEPENDS="lua-dev gtk+-dev libwebkit-dev libunique-dev 
+sqlite-dev git bzip2 luafilesystem"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://mason-larobina.github.io/luakit/"
+WGET_URL="git|git://github.com/mason-larobina/luakit.git"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make PREFIX=/usr
+	make install DESTDIR=$DESTDIR PREFIX=/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs 
+	cp -a $install/etc $fs
+	cp -a $install/usr $fs
+	rm -rf $fs/usr/share/man
+}
+
