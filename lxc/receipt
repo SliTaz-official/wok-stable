@@ -33,12 +33,13 @@ genpkg_rules()
 		$fs/usr/bin/lxc-version $fs/usr/bin/lxc-netstat \
 		$fs/usr/bin/lxc-destroy $fs/usr/bin/lxc-create \
 		$fs/usr/bin/lxc-setcaps $fs/usr/bin/lxc-setuid \
-		$fs/usr/bin/lxc-ls
+		$fs/usr/bin/lxc-ls $fs/usr/lib/lxc/templates/lxc*
 	sed -i -e 's/^is_set(/zgrep() { zcat | grep "$@"; }\n\n&/' \
 		-e 's/\(.*\$GREP .*\)\(\$CONFIG.*\)/\1< \2/' \
 		-e 's/ < 3/ -lt 3/;s/ > 3/ -gt 3/' -e 's|/bin/bash|/bin/ash|' \
 		$fs/usr/bin/lxc-checkconfig
 	sed -i "s/--preserve-root//" $fs/usr/bin/lxc-destroy $fs/usr/lib/lxc/templates/lxc-*
+	sed -i "s/(arch)/(uname -m)/" $fs/usr/lib/lxc/templates/lxc-*
 	chmod +x $fs/usr/bin/lxc-*
 }
 
