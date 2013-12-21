@@ -9,7 +9,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://lxc.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="libcap perl util-linux-ng-getopt linux-lxc"
+DEPENDS="libcap perl util-linux-ng-getopt"
 BUILD_DEPENDS="libcap-dev util-linux-ng-getopt"
 
 # Rules to configure and make the package.
