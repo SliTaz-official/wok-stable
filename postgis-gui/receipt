@@ -9,7 +9,7 @@ WEB_SITE="http://postgis.refractions.net/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WANTED="postgis"
 
-DEPENDS="gtk-+ postgis"
+DEPENDS="gtk+ postgis"
 
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

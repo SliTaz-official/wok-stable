@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sylpheed-dev"
-VERSION="3.1.0"
+VERSION="3.1.1"
 CATEGORY="development"
 SHORT_DESC="Sylpheed devel files"
 MAINTAINER="fraazz@altern.org"
