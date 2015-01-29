@@ -22,6 +22,8 @@ cook_tmp_toolchain()
 	
 	# Fix a bug that prevents Glibc from building with GCC-4.5.2:
 	patch -Np1 -i $stuff/glibc-2.13-gcc_fix-1.patch
+	
+	patch -Np1 -i $stuff/glibc-2.13-CVE-2015-0235.patch
 
 	# Build in a separate directory.
 	mkdir ../glibc-build && cd ../glibc-build
@@ -77,6 +79,8 @@ compile_rules()
 
 	# Fix a bug that prevents Glibc from building with GCC-4.5.2:
 	patch -Np1 -i $stuff/glibc-2.13-gcc_fix-1.patch
+
+	patch -Np1 -i $stuff/glibc-2.13-CVE-2015-0235.patch
 
 	# Fix a stack imbalance that occurs under some conditions:
 	sed -i '195,213 s/PRIVATE_FUTEX/FUTEX_CLOCK_REALTIME/' \
