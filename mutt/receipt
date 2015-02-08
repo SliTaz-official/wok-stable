@@ -11,6 +11,7 @@ BUILD_DEPENDS="libidn-dev ncurses-dev openssl-dev"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.mutt.org"
 WGET_URL="ftp://ftp.mutt.org/mutt/devel/$TARBALL"
+CONFIG_FILES="/etc/Muttrc /etc/mime.types"
 
 # Rules to configure and make the package.
 compile_rules()
