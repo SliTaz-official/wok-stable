@@ -16,6 +16,9 @@ WGET_URL="ftp://alpha.gnu.org/gnu/grub/$TARBALL"
 compile_rules()
 {
 	cd $src
+	# CVE-2015-8370
+	sed -i "s/'.b'/& \\&\\& cur_len/" lib/crypto.c normal/auth.c
+	
 	chmod +x install-sh
 	./configure --prefix=/usr --sysconfdir=/etc \
 	--mandir=/usr/share/man $CONFIGURE_ARGS &&
