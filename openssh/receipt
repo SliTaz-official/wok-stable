@@ -35,6 +35,9 @@ genpkg_rules()
 	cp $stuff/openssh $fs/etc/init.d
 	sed -i 's|/usr/libexec/sftp-server|/usr/sbin/sftp-server|' \
 		$fs/etc/ssh/sshd_config
+
+	# client bug CVE-2016-0777 and CVE-2016-0778
+	echo -e '\nHost *\nUseRoaming no' >> $fs/etc/ssh/ssh_config
 }
 
 # Pre and post install commands for Tazpkg.
