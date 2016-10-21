@@ -75,6 +75,7 @@ aufs2-standalone.patch
 003-squashfs-x86-support-xz-compressed-kernel.patch
 004-squashfs-add-xz-compression-support.patch
 005-squashfs-add-xz-compression-configuration-option.patch
+$PACKAGE-CVE-2016-5195.u
 EOT
 
 	[ ! -x /usr/bin/cook ] && report step "Make kernel proper and then build lguest"
