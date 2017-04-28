@@ -22,8 +22,8 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/share
-	cp -a $_pkg/usr/bin $fs/usr
 	cp -a $_pkg/usr/lib $fs/usr
 	cp -a $_pkg/usr/share/itaka $fs/usr/share
+	ln -s  ../lib/itaka/itaka.py $fs/usr/bin/itaka
 }
 

@@ -30,4 +30,7 @@ genpkg_rules()
 	cp -a $_pkg/usr/share/catfish $fs/usr/share
 	cp -a $_pkg/usr/share/icons $fs/usr/share
 	cp -a $_pkg/usr/share/applications $fs/usr/share
+	rm -f $fs/usr/share/catfish/catfish.svg $fs/usr/share/catfish/locale
+	ln -s ../icons/hicolor/scalable/apps/catfish.svg $fs/usr/share/catfish/catfish.svg
+	ln -s ../locale $fs/usr/share/catfish/locale
 }
