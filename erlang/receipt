@@ -50,6 +50,7 @@ genpkg_rules()
 {
 	cp -a $_pkg/usr $fs
 	for i in $(cd $fs/usr/bin; ls *); do
+		rm -f $fs/usr/bin/$i
 		ln -s ../lib/erlang/bin/$i $fs/usr/bin/$i
 	done
 }
