@@ -26,7 +26,7 @@ libxml2-dev"
 # Use --enable-ffmpeg to build against shared ffmpeg
 compile_rules()
 {
-	cd $src
+	sed -i 's/return gz[a-z]*(/& (gzFile_s*)/' modules/gui/skins2/src/theme_loader.cpp
 	[ -s /var/lib/dbus/machine-id ] || dbus-uuidgen > /var/lib/dbus/machine-id
 	# Be busybox comptible...
 	sed -i 's/wc -m/wc -c/' configure*
