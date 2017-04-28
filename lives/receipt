@@ -16,22 +16,22 @@ BUILD_DEPENDS="alsa-lib alsa-lib-dev libpng-dev gtk+-dev procps expat-dev perl"
 #
 compile_rules()
 {
-	cd $src
+	sed -i 's|\$(LN_S) \$(DESTDIR)\$(bindir)/lives-exe|$(LN_S) lives-exe|' Makefile*
 	./configure \
 		--prefix=/usr \
 		--disable-jack \
 		$CONFIGURE_ARGS &&
 	make &&
-	make DESTDIR=$PWD/_pkg install
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib $fs/usr/share
-	cp -a $_pkg/usr/bin $fs/usr
-	cp -a $_pkg/usr/lib/*.so* $fs/usr/lib
-	cp -a $_pkg/usr/lib/lives $fs/usr/lib
-	cp -a $_pkg/usr/share/lives $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/lives $fs/usr/lib
+	cp -a $install/usr/share/lives $fs/usr/share
 	find $fs/usr/lib/lives -name "*.la" -exec rm '{}' \;
 }
