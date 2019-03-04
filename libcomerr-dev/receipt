@@ -1,12 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="libcomerr-dev"
-VERSION="1.41.14"
+VERSION="1.44.2"
 CATEGORY="development"
 SHORT_DESC="The libcomerr devel files."
 MAINTAINER="pankso@slitaz.org"
 WANTED="e2fsprogs"
 WEB_SITE="http://e2fsprogs.sourceforge.net/"
+
+DEPENDS="pkg-config"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
@@ -14,6 +16,6 @@ genpkg_rules()
 	while read file; do
 		dir=$(dirname $file)
 		[ -d $fs$dir ] || mkdir -p $fs$dir
-		cp -a $_pkg$file $fs$file
+		cp -a $install$file $fs$file
 	done < $wanted_stuff/$PACKAGE.files-list
 }

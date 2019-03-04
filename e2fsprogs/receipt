@@ -1,20 +1,23 @@
 # SliTaz package receipt.
 
 PACKAGE="e2fsprogs"
-VERSION="1.41.14"
+VERSION="1.44.2"
 CATEGORY="base-system"
-SHORT_DESC="Filesystem utilities for use with ext2 and ext3 (without fsck*)."
+SHORT_DESC="Filesystem utilities for use with ext2/ext3/ext4 (without fsck*)."
 MAINTAINER="pankso@slitaz.org"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://e2fsprogs.sourceforge.net/"
-WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+WGET_URL="https://www.kernel.org/pub/linux/kernel/people/tytso/$PACKAGE/v$VERSION/$TARBALL"
+
 DEPENDS="libcomerr util-linux-ng-blkid util-linux-ng-uuid"
+BUILD_DEPENDS="texinfo util-linux-ng-blkid-dev util-linux-ng-uuid-dev wget"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
-	./configure \
+	mkdir ../build && cd ../build
+	$src/configure \
 		--prefix=/usr \
 		--with-root-prefix="" \
 		--enable-elf-shlibs \
@@ -27,22 +30,20 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share/locale
-	cp -a $_pkg/sbin $fs
-	cp -a $_pkg/lib $fs
-	cp -a $_pkg/etc $fs
-	cp -a $_pkg/usr/bin $fs/usr
-	cp -a $_pkg/usr/sbin $fs/usr
-	cp -a $_pkg/usr/lib/*.so $fs/usr/lib
+	mkdir -p $fs/usr/lib
+	cp -a $install/sbin $fs
+	cp -a $install/lib $fs
+	cp -a $install/etc $fs
+	# legacy grub & syslinux don't support 64bit feature
+	sed -i 's|small = {|&\n\t\tfeatures = ^64bit|' $fs/etc/mke2fs.conf
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	( cd $fs ; for i in lib/*.so.?; do ln -s /$i usr/$i ; done )
 	cat $stuff/*.files-list | while read file; do
-		rm -f $fs$file
+		rm -f ${fs}$file
 	done
-	# Remove fsck provided by Busybox and blkid by util-linux-ng.
-	rm $fs/sbin/fsck* $fs/sbin/blkid
-	rm $fs/lib/libblkid* $fs/usr/lib/libblkid*
-	# Remove uuid files provided by util-linux-ng.
-	rm $fs/usr/sbin/uuidd $fs/usr/bin/uuidgen
-	rm $fs/lib/libuuid* $fs/usr/lib/libuuid*
+	# Remove fsck provided by Busybox.
+	rm $fs/sbin/fsck*
 }
 
 # Overlap busybox
